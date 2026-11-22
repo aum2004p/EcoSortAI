@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Scanner - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="scanner-page">
+    <div class="page-header">
+        <h1>🔍 AI Scanner</h1>
+        <p>อัปโหลดภาพขยะเพื่อตรวจจับ จำแนกประเภท ตรวจสอบคุณภาพ และรับคำแนะนำการจัดการ</p>
+    </div>
+
+    <!-- ===== Upload Zone ===== -->
+    <div class="scanner-layout">
+        <div class="scanner-left">
+            <!-- Upload area -->
+            <div id="uploadZone" class="upload-zone">
+                <div class="upload-inner">
+                    <div class="upload-icon">📤</div>
+                    <h3>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกภาพ</h3>
+                    <p>รองรับไฟล์ PNG, JPG, JPEG, WEBP (ไม่เกิน 16 MB)</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <!-- Image canvas (with bounding boxes) -->
+            <div id="imageContainer" class="image-container hidden">
+                <div class="image-header">
+                    <h3>ผลการตรวจจับ</h3>
+                    <button id="reuploadBtn" class="btn btn-sm btn-secondary">📤 อัปโหลดใหม่</button>
+                </div>
+                <div class="image-wrapper">
+                    <img id="resultImage" src="" alt="Uploaded waste image">
+                    <canvas id="bboxCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Loading spinner -->
+            <div id="loadingOverlay" class="loading-overlay hidden">
+                <div class="spinner"></div>
+                <p>กำลังประมวลผลด้วย AI...</p>
+                <p class="loading-subtext">อาจใช้เวลา 2-10 วินาที</p>
+            </div>
+
+            <!-- Error message -->
+            <div id="errorMsg" class="error-msg hidden"></div>
+        </div>
+
+        <div class="scanner-right">
+            <!-- Summary -->
+            <div id="summaryPanel" class="summary-panel hidden">
+                <h3>📋 สรุปผลการสแกน</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-value" id="sumTotal">0</span>
+                        <span class="summary-label">ชิ้นทั้งหมด</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value summary-clean" id="sumClean">0</span>
+                        <span class="summary-label">สะอาด</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value summary-contaminated" id="sumContaminated">0</span>
+                        <span class="summary-label">ปนเปื้อน</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-value summary-recyclable" id="sumRecyclable">0</span>
+                        <span class="summary-label">รีไซเคิลได้</span>
+                    </div>
+                </div>
+                <div class="summary-meta">
+                    <span>⏱️ เวลาประมวลผล: <strong id="sumTime">0</strong> วินาที</span>
+                </div>
+                <div class="summary-co2">
+                    <span>🌍 CO₂ ลดได้: <strong id="sumCO2">0</strong> kg</span>
+                    <span>⭐ คะแนนที่ได้: <strong id="sumPoints">0</strong> คะแนน</span>
+                </div>
+                <div class="summary-model">
+                    <span class="model-tag">YOLO: <strong id="sumDetectorMode">-</strong></span>
+                    <span class="model-tag">CNN: <strong id="sumClassifierMode">-</strong></span>
+                </div>
+                <button id="saveBtn" class="btn btn-primary btn-block" disabled>
+                    💾 บันทึกผลการสแกน
+                </button>
+                <div id="saveStatus" class="save-status hidden"></div>
+            </div>
+
+            <!-- Item list -->
+            <div id="itemList" class="item-list hidden">
+                <h3>รายการวัตถุที่ตรวจพบ</h3>
+                <div id="itemsContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

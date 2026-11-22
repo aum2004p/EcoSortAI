@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Database
+data/*.db
+data/*.db-journal
+
+# Uploaded images (user-generated)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Model weights (large files, keep out of git)
+models/weights/*.pt
+models/weights/*.pth
+models/weights/*.onnx
+
+# Training outputs
+training/runs/
+training/*_results.json
+training/*_comparison.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env

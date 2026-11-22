@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <div class="page-header">
+        <h1>📊 Dashboard วิเคราะห์ข้อมูล</h1>
+        <p>สถิติและแนวโน้มขยะในชุมชน จากข้อมูลที่บันทึกเข้าระบบ</p>
+    </div>
+
+    <!-- ===== Period selector ===== -->
+    <div class="dashboard-controls">
+        <div class="period-tabs">
+            <button class="period-tab active" data-period="daily">รายวัน (30 วัน)</button>
+            <button class="period-tab" data-period="weekly">รายสัปดาห์ (12 สัปดาห์)</button>
+            <button class="period-tab" data-period="monthly">รายเดือน (12 เดือน)</button>
+        </div>
+        <button id="exportBtn" class="btn btn-secondary">
+            📥 ส่งออก CSV
+        </button>
+        <button id="reportBtn" class="btn btn-primary">
+            📄 สร้าง PDF Report
+        </button>
+    </div>
+
+    <!-- ===== Carbon Impact Section ===== -->
+    <div class="carbon-impact-section">
+        <h3>🌍 ผลกระทบต่อสิ่งแวดล้อม (Carbon Footprint)</h3>
+        <div class="carbon-grid">
+            <div class="carbon-card">
+                <span class="carbon-icon">🌿</span>
+                <span class="carbon-value" id="carbonCO2">0</span>
+                <span class="carbon-label">CO₂ ลดได้ (kg)</span>
+            </div>
+            <div class="carbon-card">
+                <span class="carbon-icon">🌳</span>
+                <span class="carbon-value" id="carbonTrees">0</span>
+                <span class="carbon-label">เทียบเท่าต้นไม้ (ต้น/ปี)</span>
+            </div>
+            <div class="carbon-card">
+                <span class="carbon-icon">🚗</span>
+                <span class="carbon-value" id="carbonKm">0</span>
+                <span class="carbon-label">เทียบเท่าขับรถลด (km)</span>
+            </div>
+            <div class="carbon-card">
+                <span class="carbon-icon">📱</span>
+                <span class="carbon-value" id="carbonPhones">0</span>
+                <span class="carbon-label">เทียบเท่าชาร์จมือถือ (ครั้ง)</span>
+            </div>
+        </div>
+        <div class="carbon-impact-text" id="carbonImpactText"></div>
+    </div>
+
+    <!-- ===== Recovery Progress (Action Planner) ===== -->
+    <div class="recovery-dash">
+        <h3>🔄 ผลการจัดการขยะจริง (Action Planner)</h3>
+        <div class="plan-overview">
+            <div class="plan-ov-card"><span class="plan-ov-value" id="rdTotal">0</span><span class="plan-ov-label">งานทั้งหมด</span></div>
+            <div class="plan-ov-card"><span class="plan-ov-value" id="rdOpen">0</span><span class="plan-ov-label">งานค้าง</span></div>
+            <div class="plan-ov-card"><span class="plan-ov-value" id="rdDone">0</span><span class="plan-ov-label">เสร็จและยืนยันแล้ว</span></div>
+            <div class="plan-ov-card"><span class="plan-ov-value" id="rdRecovered">0</span><span class="plan-ov-label">ขยะปนเปื้อนที่กู้คืนได้</span></div>
+        </div>
+        <p class="plan-hint" id="rdProblem">ยังไม่มีข้อมูลการจัดการ</p>
+    </div>
+
+    <!-- ===== Summary Cards ===== -->
+    <div class="dash-stats-grid">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">📸</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statScans">0</span>
+                <span class="dash-stat-label">ครั้งการสแกนทั้งหมด</span>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">🗑️</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statItems">0</span>
+                <span class="dash-stat-label">ชิ้นขยะที่ตรวจพบ</span>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">✨</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statClean">0</span>
+                <span class="dash-stat-label">ขยะสะอาด</span>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">⚠️</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statContaminated">0</span>
+                <span class="dash-stat-label">ขยะปนเปื้อน</span>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">♻️</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statRecyclable">0</span>
+                <span class="dash-stat-label">รีไซเคิลได้</span>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon">🚮</div>
+            <div class="dash-stat-body">
+                <span class="dash-stat-value" id="statNonRecyclable">0</span>
+                <span class="dash-stat-label">ขยะทั่วไป</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Charts Row 1 ===== -->
+    <div class="charts-row">
+        <div class="chart-card chart-wide">
+            <h3>📈 แนวโน้มการสแกนตามช่วงเวลา</h3>
+            <div class="chart-body">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>🥧 สัดส่วนขยะตามประเภท</h3>
+            <div class="chart-body">
+                <canvas id="categoryPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Charts Row 2 ===== -->
+    <div class="charts-row">
+        <div class="chart-card">
+            <h3>📊 จำนวนขยะตามประเภท</h3>
+            <div class="chart-body">
+                <canvas id="categoryBarChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>✨ สะอาด vs ปนเปื้อน</h3>
+            <div class="chart-body">
+                <canvas id="qualityChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>♻️ รีไซเคิลได้ vs ไม่ได้</h3>
+            <div class="chart-body">
+                <canvas id="recyclableChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Charts Row 3: Category Quality Breakdown ===== -->
+    <div class="charts-row">
+        <div class="chart-card chart-wide">
+            <h3>🔬 คุณภาพขยะแยกตามประเภท</h3>
+            <div class="chart-body">
+                <canvas id="categoryQualityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Prediction Section (Time Series ML) ===== -->
+    <div class="prediction-section">
+        <h3>🔮 พยากรณ์ปริมาณขยะ (Time Series Prediction)</h3>
+        <p class="section-subtitle-sm">คาดการณ์จากข้อมูลที่มีโดยใช้ Linear Regression + Moving Average</p>
+        <div class="prediction-controls">
+            <label>พยากรณ์ข้างหน้า: </label>
+            <select id="predDays">
+                <option value="7">7 วัน</option>
+                <option value="14">14 วัน</option>
+                <option value="30">30 วัน</option>
+            </select>
+            <button id="predRefreshBtn" class="btn btn-sm btn-secondary">รีเฟรช</button>
+            <span id="predConfidence" class="pred-confidence"></span>
+        </div>
+        <div class="chart-body" style="height: 320px;">
+            <canvas id="predictionChart"></canvas>
+        </div>
+        <div class="prediction-summary" id="predictionSummary"></div>
+    </div>
+
+    <!-- ===== Recent Scans Table ===== -->
+    <div class="recent-scans-section">
+        <h3>🗓️ ประวัติการสแกนล่าสุด</h3>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>วันที่</th>
+                        <th>จำนวนชิ้น</th>
+                        <th>สะอาด</th>
+                        <th>ปนเปื้อน</th>
+                        <th>รีไซเคิลได้</th>
+                        <th>เวลาประมวลผล</th>
+                    </tr>
+                </thead>
+                <tbody id="recentScansBody">
+                    <tr>
+                        <td colspan="7" class="table-loading">กำลังโหลดข้อมูล...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ===== Empty state ===== -->
+    <div id="dashEmptyState" class="dash-empty hidden">
+        <div class="dash-empty-icon">📭</div>
+        <h3>ยังไม่มีข้อมูลในระบบ</h3>
+        <p>เริ่มสแกนขยะและบันทึกผลเพื่อดูสถิติได้ที่นี่</p>
+        <a href="{{ url_for('scanner') }}" class="btn btn-primary">ไปที่ AI Scanner</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

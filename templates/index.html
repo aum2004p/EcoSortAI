@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}EcoSort AI - ระบบจำแนกขยะอัจฉริยะ{% endblock %}
+
+{% block content %}
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">EcoSort <span class="accent">AI</span></h1>
+        <p class="hero-subtitle">
+            ระบบปัญญาประดิษฐ์เพื่อจำแนก ตรวจสอบคุณภาพ<br>
+            และแนะนำการจัดการขยะรีไซเคิลอย่างอัจฉริยะ
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('scanner') }}"  class="btn btn-primary  btn-lg">🔍 เริ่มสแกนขยะ</a>
+            <a href="{{ url_for('live_scan') }}" class="btn btn-secondary btn-lg">🎥 สแกนผ่านกล้อง</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg">📊 Dashboard</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Live Stats ===== -->
+<section class="stats-bar">
+    <div class="stat-card">
+        <span class="stat-icon">📸</span>
+        <span class="stat-value">{{ total_scans }}</span>
+        <span class="stat-label">ครั้งการสแกน</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🗑️</span>
+        <span class="stat-value">{{ total_items }}</span>
+        <span class="stat-label">ชิ้นที่ตรวจพบ</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🤖</span>
+        <span class="stat-value">3</span>
+        <span class="stat-label">โมเดล AI</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">♻️</span>
+        <span class="stat-value">6</span>
+        <span class="stat-label">ประเภทขยะ</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🌍</span>
+        <span class="stat-value" id="homeCO2">-</span>
+        <span class="stat-label">CO₂ ลดได้ (kg)</span>
+    </div>
+</section>
+
+<!-- ===== Quick Access Cards ===== -->
+<section class="section">
+    <h2 class="section-title">เริ่มใช้งาน</h2>
+    <div class="quickstart-grid">
+
+        <a href="{{ url_for('scanner') }}" class="quickstart-card">
+            <div class="qs-icon">📤</div>
+            <h3>สแกนจากภาพ</h3>
+            <p>อัปโหลดรูปขยะ — AI วิเคราะห์ให้ทันที</p>
+        </a>
+
+        <a href="{{ url_for('live_scan') }}" class="quickstart-card quickstart-card-accent">
+            <div class="qs-icon">🎥</div>
+            <h3>สแกนสดผ่านกล้อง</h3>
+            <p>เปิดเว็บแคมแล้วชี้กล้องที่ขยะได้เลย</p>
+            <span class="qs-badge">Real-time</span>
+        </a>
+
+        <a href="{{ url_for('dashboard') }}" class="quickstart-card">
+            <div class="qs-icon">📊</div>
+            <h3>Dashboard</h3>
+            <p>สถิติ แนวโน้ม พยากรณ์ และรายงาน PDF</p>
+        </a>
+
+        <a href="{{ url_for('leaderboard') }}" class="quickstart-card">
+            <div class="qs-icon">🏆</div>
+            <h3>อันดับชุมชน</h3>
+            <p>ดูอันดับผู้รีไซเคิลและสะสมคะแนน</p>
+        </a>
+
+        <a href="{{ url_for('waste_planner') }}" class="quickstart-card quickstart-card-accent">
+            <span class="qs-badge">ใหม่</span>
+            <div class="qs-icon">🗂️</div>
+            <h3>วางแผนจัดการขยะ</h3>
+            <p>สร้างรายการงานจากผลสแกน แล้วติดตามจนเสร็จ</p>
+        </a>
+
+        <a href="{{ url_for('waste_recovery') }}" class="quickstart-card quickstart-card-accent">
+            <span class="qs-badge">ใหม่</span>
+            <div class="qs-icon">🔄</div>
+            <h3>Recovery Center</h3>
+            <p>สแกนซ้ำหลังจัดการ ยืนยันผล และรับคะแนน</p>
+        </a>
+
+    </div>
+</section>
+
+<!-- ===== Waste Categories ===== -->
+<section class="section section-alt">
+    <h2 class="section-title">ประเภทขยะที่รองรับ</h2>
+    <p class="section-subtitle">ระบบจำแนกขยะ 6 ประเภทและตรวจสอบความสะอาดของแต่ละชิ้น</p>
+    <div class="categories-grid">
+        {% for key, cat in categories.items() %}
+        <div class="category-card" style="border-color: {{ cat.color }};">
+            <div class="category-color" style="background: {{ cat.color }};"></div>
+            <h3>{{ cat.name_th }}</h3>
+            <p>{{ cat.name_en }}</p>
+            <div class="category-recyclable">
+                {% if cat.recyclable %}
+                    <span class="badge badge-green">รีไซเคิลได้</span>
+                {% else %}
+                    <span class="badge badge-red">ขยะทั่วไป</span>
+                {% endif %}
+            </div>
+            <p class="category-bin">🗑️ {{ cat.bin }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ===== AI Model Status ===== -->
+<section class="section">
+    <h2 class="section-title">สถานะโมเดล AI</h2>
+    <div class="model-status-grid">
+        <div class="model-status-card">
+            <h4>Model 1 — YOLO Object Detection</h4>
+            <div class="status-row">
+                <span class="status-label">สถานะ:</span>
+                <span class="status-badge status-{{ 'ok' if status.detector.ready else 'warn' }}">
+                    {{ 'พร้อมใช้งาน' if status.detector.ready else 'ไม่พร้อม' }}
+                </span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">โหมด:</span>
+                <span class="status-value">
+                    {% if status.detector.mode == 'custom' %}โมเดลที่ฝึกเอง
+                    {% elif status.detector.mode == 'pretrained' %}Pre-trained YOLOv8 (COCO)
+                    {% else %}Demo Mode{% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="model-status-card">
+            <h4>Model 2 — CNN Quality Classifier</h4>
+            <div class="status-row">
+                <span class="status-label">สถานะ:</span>
+                <span class="status-badge status-{{ 'ok' if status.classifier.ready else 'warn' }}">
+                    {{ 'พร้อมใช้งาน' if status.classifier.ready else 'ไม่พร้อม' }}
+                </span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">โหมด:</span>
+                <span class="status-value">
+                    {% if status.classifier.mode == 'trained' %}โมเดลที่ฝึกเอง (ResNet18)
+                    {% elif status.classifier.mode == 'heuristic' %}Heuristic (วิเคราะห์สี/พื้นผิว)
+                    {% else %}Demo Mode{% endif %}
+                </span>
+            </div>
+        </div>
+        <div class="model-status-card">
+            <h4>Model 3 — Time Series Predictor</h4>
+            <div class="status-row">
+                <span class="status-label">สถานะ:</span>
+                <span class="status-badge status-ok">พร้อมใช้งาน</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">โหมด:</span>
+                <span class="status-value">Linear Regression + Moving Average</span>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+        <a href="{{ url_for('about') }}" class="btn btn-secondary">
+            📖 ดูรายละเอียดโครงงานและสถาปัตยกรรม AI
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load live CO2 stat
+fetch('/api/carbon-impact')
+    .then(r => r.json())
+    .then(d => {
+        document.getElementById('homeCO2').textContent = d.total_co2.toFixed(3);
+    })
+    .catch(() => {});
+</script>
+{% endblock %}

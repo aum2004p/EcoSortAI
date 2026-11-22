@@ -1,0 +1,21 @@
+# EcoSort AI - Python Dependencies
+# ================================
+# Install with: pip install -r requirements.txt
+
+# Web Framework
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+
+# AI / Deep Learning
+ultralytics==8.3.0
+torch==2.4.1
+torchvision==0.19.1
+
+# Image Processing
+opencv-python==4.10.0.84
+Pillow==10.4.0
+numpy==1.26.4
+
+# Utilities
+Werkzeug==3.0.6
+reportlab>=5.0

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}สมัครสมาชิก - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>📝 สมัครสมาชิก</h1>
+            <p>สมัครเพื่อเริ่มสะสมคะแนนและเข้าร่วมอันดับรีไซเคิล</p>
+        </div>
+        <form id="registerForm" class="auth-form">
+            <div class="form-group">
+                <label for="username">ชื่อผู้ใช้</label>
+                <input type="text" id="username" name="username" required
+                       placeholder="อย่างน้อย 3 ตัวอักษร" minlength="3">
+            </div>
+            <div class="form-group">
+                <label for="email">อีเมล</label>
+                <input type="email" id="email" name="email" required
+                       placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน</label>
+                <input type="password" id="password" name="password" required
+                       placeholder="อย่างน้อย 6 ตัวอักษร" minlength="6">
+            </div>
+            <div id="registerError" class="auth-error hidden"></div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                สมัครสมาชิก
+            </button>
+        </form>
+        <div class="auth-footer">
+            <p>มีบัญชีแล้ว? <a href="{{ url_for('login_page') }}">เข้าสู่ระบบ</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorDiv = document.getElementById('registerError');
+    errorDiv.classList.add('hidden');
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username, email, password}),
+        });
+        const data = await res.json();
+        if (data.success) {
+            window.location.href = '/profile';
+        } else {
+            errorDiv.textContent = data.error || 'สมัครไม่สำเร็จ';
+            errorDiv.classList.remove('hidden');
+        }
+    } catch (err) {
+        errorDiv.textContent = 'เกิดข้อผิดพลาด: ' + err.message;
+        errorDiv.classList.remove('hidden');
+    }
+});
+</script>
+{% endblock %}

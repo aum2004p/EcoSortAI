@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Waste Recovery Center - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+    <div class="page-header">
+        <h1>🔄 Waste Recovery Center</h1>
+        <p>ติดตามงานจัดการขยะ สแกนซ้ำหลังจัดการ และยืนยันผล</p>
+    </div>
+
+    <div class="plan-overview">
+        <div class="plan-ov-card"><span class="plan-ov-value" id="rcPending">0</span><span class="plan-ov-label">รอดำเนินการ</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="rcProgress">0</span><span class="plan-ov-label">กำลังดำเนินการ</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="rcReview">0</span><span class="plan-ov-label">รอตรวจสอบ</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="rcDone">0</span><span class="plan-ov-label">เสร็จแล้ว</span></div>
+    </div>
+
+    <div class="period-tabs rc-filters" id="rcFilters">
+        <button class="period-tab active" data-status="">ทั้งหมด</button>
+        <button class="period-tab" data-status="pending">รอดำเนินการ</button>
+        <button class="period-tab" data-status="in_progress">กำลังดำเนินการ</button>
+        <button class="period-tab" data-status="awaiting_review">รอตรวจสอบ</button>
+        <button class="period-tab" data-status="completed">เสร็จแล้ว</button>
+        <button class="period-tab" data-status="unable">กู้คืนไม่ได้</button>
+    </div>
+
+    <div id="taskList" class="task-list"><div class="table-loading">กำลังโหลด...</div></div>
+    <div id="rcToast" class="rc-toast hidden"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/waste_recovery.js') }}"></script>
+{% endblock %}

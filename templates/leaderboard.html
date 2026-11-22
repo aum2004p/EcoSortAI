@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Leaderboard - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="leaderboard-page">
+    <div class="page-header">
+        <h1>🏆 อันดับผู้รีไซเคิล</h1>
+        <p>ตารางอันดับสมาชิกที่คัดแยกขยะและรีไซเคิลมากที่สุดในชุมชน</p>
+    </div>
+
+    <div class="leaderboard-stats">
+        <div class="lb-stat-card">
+            <span class="lb-stat-icon">👥</span>
+            <div>
+                <span class="lb-stat-value" id="totalUsers">0</span>
+                <span class="lb-stat-label">สมาชิกทั้งหมด</span>
+            </div>
+        </div>
+        <div class="lb-stat-card">
+            <span class="lb-stat-icon">♻️</span>
+            <div>
+                <span class="lb-stat-value" id="totalRecycled">0</span>
+                <span class="lb-stat-label">ชิ้นรีไซเคิลรวม</span>
+            </div>
+        </div>
+        <div class="lb-stat-card">
+            <span class="lb-stat-icon">🌍</span>
+            <div>
+                <span class="lb-stat-value" id="totalCO2">0</span>
+                <span class="lb-stat-label">CO₂ ลดได้ (kg)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="leaderboard-table-container">
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th class="col-rank">อันดับ</th>
+                    <th>สมาชิก</th>
+                    <th>ตราป้าย</th>
+                    <th>คะแนน</th>
+                    <th>ครั้งสแกน</th>
+                    <th>ชิ้นรีไซเคิล</th>
+                    <th>CO₂ (kg)</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+                <tr>
+                    <td colspan="7" class="table-loading">กำลังโหลด...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% if not user %}
+    <div class="lb-join-cta">
+        <h3>เข้าร่วมกับเรา!</h3>
+        <p>สมัครสมาชิกและเริ่มสะสมคะแนนรีไซเคิลของคุณ</p>
+        <a href="{{ url_for('register_page') }}" class="btn btn-primary">สมัครสมาชิก</a>
+        <a href="{{ url_for('login_page') }}" class="btn btn-secondary">เข้าสู่ระบบ</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load leaderboard data
+fetch('/api/leaderboard?limit=50')
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('totalUsers').textContent = data.total_users;
+        let totalRecycled = 0, totalCO2 = 0;
+        const tbody = document.getElementById('leaderboardBody');
+
+        if (!data.leaderboard || data.leaderboard.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="table-loading">ยังไม่มีสมาชิกในระบบ</td></tr>';
+            return;
+        }
+
+        data.leaderboard.forEach(entry => {
+            totalRecycled += entry.total_recyclable;
+            totalCO2 += entry.co2_saved;
+
+            const rankClass = entry.rank <= 3 ? `rank-${entry.rank}` : '';
+            const rankIcon = entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' :
+                            entry.rank === 3 ? '🥉' : `#${entry.rank}`;
+
+            tbody.innerHTML += `
+                <tr class="${rankClass}">
+                    <td class="col-rank"><span class="rank-badge">${rankIcon}</span></td>
+                    <td><strong>${entry.username}</strong></td>
+                    <td>${entry.badge_icon} ${entry.badge_name}</td>
+                    <td class="points-cell">${entry.points.toLocaleString()}</td>
+                    <td>${entry.total_scans}</td>
+                    <td>${entry.total_recyclable}</td>
+                    <td>${entry.co2_saved.toFixed(4)}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('totalRecycled').textContent = totalRecycled.toLocaleString();
+        document.getElementById('totalCO2').textContent = totalCO2.toFixed(4);
+    })
+    .catch(err => console.error('Leaderboard error:', err));
+</script>
+{% endblock %}

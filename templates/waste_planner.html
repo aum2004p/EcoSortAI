@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Waste Action Planner - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+    <div class="page-header">
+        <h1>🗂️ Smart Waste Action Planner</h1>
+        <p>เลือกประวัติการสแกนของคุณ แล้วให้ระบบสร้างแผนและรายการงานจัดการขยะ</p>
+    </div>
+
+    <!-- Overview -->
+    <div class="plan-overview">
+        <div class="plan-ov-card"><span class="plan-ov-value" id="ovTotal">0</span><span class="plan-ov-label">งานทั้งหมด</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="ovOpen">0</span><span class="plan-ov-label">ต้องจัดการ</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="ovDone">0</span><span class="plan-ov-label">เสร็จและยืนยันแล้ว</span></div>
+        <div class="plan-ov-card"><span class="plan-ov-value" id="ovRate">0%</span><span class="plan-ov-label">อัตราสำเร็จ</span></div>
+    </div>
+
+    <div class="planner-grid">
+        <!-- Scan picker -->
+        <section class="plan-panel">
+            <h3>1. เลือกประวัติการสแกน</h3>
+            <p class="plan-hint">แสดงเฉพาะการสแกนที่บันทึกแล้วขณะเข้าสู่ระบบ ขยะที่มีงานค้างอยู่แล้วจะไม่ถูกสร้างซ้ำ</p>
+            <div id="scanList" class="scan-pick-list"><div class="table-loading">กำลังโหลด...</div></div>
+            <input type="text" id="planTitle" class="plan-input" maxlength="128" placeholder="ชื่อแผน (ไม่บังคับ)">
+            <button id="createPlanBtn" class="btn btn-primary btn-block" disabled>✨ สร้างแผนจากที่เลือก</button>
+            <div id="planMsg" class="save-status hidden"></div>
+            <a href="{{ url_for('scanner') }}" class="plan-link">+ สแกนขยะเพิ่ม</a>
+        </section>
+
+        <!-- Plans -->
+        <section class="plan-panel">
+            <h3>2. แผนของคุณ</h3>
+            <div id="planList"><div class="table-loading">กำลังโหลด...</div></div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/waste_planner.js') }}"></script>
+{% endblock %}

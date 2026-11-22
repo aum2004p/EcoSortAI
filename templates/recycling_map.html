@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}จุดทิ้งขยะรีไซเคิล - EcoSort AI{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<div class="planner-page">
+    <div class="page-header">
+        <h1>📍 จุดรับซื้อและจุดทิ้งขยะรีไซเคิล</h1>
+        <p>ค้นหาจุดรับขวด ธนาคารขยะ ร้านรับซื้อของเก่า และจุดรับขยะอิเล็กทรอนิกส์ใกล้คุณ</p>
+    </div>
+
+    <div class="map-toolbar">
+        <button class="period-tab" id="btnLocate">📡 ใช้ตำแหน่งฉัน</button>
+        <div class="period-tabs" id="typeFilters">
+            <button class="period-tab active" data-type="">ทั้งหมด</button>
+            {% for key, t in point_types.items() %}
+            <button class="period-tab" data-type="{{ key }}">{{ t.icon }} {{ t.name_th }}</button>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="mapNote" class="plan-hint"></div>
+
+    <div class="map-layout">
+        <div id="recMap"></div>
+        <div id="pointList" class="point-list"><div class="table-loading">กำลังโหลด...</div></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    window.POINT_TYPES = {{ point_types | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/recycling_map.js') }}"></script>
+{% endblock %}

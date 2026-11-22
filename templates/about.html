@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+
+{% block title %}เกี่ยวกับโครงงาน - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="about-page">
+
+    <!-- ===== Header ===== -->
+    <div class="about-hero">
+        <h1>♻️ EcoSort AI</h1>
+        <p>ระบบปัญญาประดิษฐ์เพื่อจำแนก ตรวจสอบคุณภาพ และแนะนำการจัดการขยะรีไซเคิลอย่างอัจฉริยะ</p>
+        <p class="about-hero-sub">CS461 Final Project</p>
+    </div>
+
+    <!-- ===== 1. ปัญหาที่แก้ ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">1</span>
+            <h2>ปัญหาที่โปรเจกต์ต้องการแก้</h2>
+        </div>
+        <p>การคัดแยกขยะในโรงเรียน ชุมชน และศูนย์รับซื้อวัสดุรีไซเคิลยังพบปัญหาหลายอย่าง</p>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <span class="problem-icon">❌</span>
+                <p>ประชาชนทิ้งขยะผิดประเภท</p>
+            </div>
+            <div class="problem-card">
+                <span class="problem-icon">🦠</span>
+                <p>ขยะรีไซเคิลมีเศษอาหารหรือสิ่งสกปรกปนเปื้อน</p>
+            </div>
+            <div class="problem-card">
+                <span class="problem-icon">⏱️</span>
+                <p>ผู้คัดแยกต้องใช้เวลาแยกขยะด้วยตนเอง</p>
+            </div>
+            <div class="problem-card">
+                <span class="problem-icon">📉</span>
+                <p>ชุมชนไม่มีข้อมูลว่าขยะประเภทใดเกิดขึ้นมากที่สุด</p>
+            </div>
+            <div class="problem-card">
+                <span class="problem-icon">🚮</span>
+                <p>วัสดุที่รีไซเคิลได้ถูกทิ้งรวมกับขยะทั่วไป</p>
+            </div>
+        </div>
+        <p style="margin-top:14px;"><strong>กลุ่มผู้ใช้งานหลัก:</strong> โรงเรียน ชุมชน ธนาคารขยะ และศูนย์คัดแยกขยะ</p>
+    </section>
+
+    <!-- ===== 2. ฟีเจอร์ทั้งหมด ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">2</span>
+            <h2>ฟีเจอร์ทั้งหมดของระบบ</h2>
+        </div>
+        <p>EcoSort AI มีมากกว่าการจำแนกขยะ — ครอบคลุม 9 โมดูลที่ทำงานร่วมกัน</p>
+
+        <div class="feature-list">
+
+            <div class="feature-item">
+                <div class="feature-icon-wrap">📦</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>1. AI ตรวจจับและจำแนกขยะ</span>
+                        <div class="feature-tags"><span class="tag">YOLO</span><span class="tag">Object Detection</span></div>
+                    </div>
+                    <p>อัปโหลดภาพขยะหลายชิ้น YOLO ตรวจจับตำแหน่งด้วย Bounding Box จำแนกประเภท 6 ชนิด และแสดงค่าความมั่นใจของแต่ละชิ้น</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-wrap">✨</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>2. AI ตรวจสอบคุณภาพสิ่งปนเปื้อน</span>
+                        <div class="feature-tags"><span class="tag">CNN</span><span class="tag">ResNet18</span></div>
+                    </div>
+                    <p>CNN จำแนกขยะแต่ละชิ้นว่า สะอาด หรือ ปนเปื้อน พร้อมคำแนะนำ เช่น ควรล้างเศษอาหารออกก่อนรีไซเคิล</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-wrap">📋</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>3. ระบบแนะนำการจัดการขยะ</span>
+                        <div class="feature-tags"><span class="tag">Rule-based</span><span class="tag">Knowledge Base</span></div>
+                    </div>
+                    <p>แนะนำถังขยะที่เหมาะสม บอกวิธีเตรียมขยะก่อนรีไซเคิล และแนวทางจัดการขยะที่ไม่สามารถรีไซเคิลได้ แยกตามประเภทและคุณภาพ</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-wrap">📊</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>4. Dashboard วิเคราะห์ข้อมูล</span>
+                        <div class="feature-tags"><span class="tag">Chart.js</span><span class="tag">Analytics</span></div>
+                    </div>
+                    <p>แสดงสถิติขยะตามประเภท คุณภาพ แนวโน้มรายวัน/สัปดาห์/เดือน ส่งออก CSV และสร้าง PDF Report สำหรับชุมชนหรือโรงเรียน</p>
+                </div>
+            </div>
+
+            <div class="feature-item feature-item-new">
+                <div class="feature-icon-wrap">🎥</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>5. Real-time Camera Scanner</span>
+                        <div class="feature-tags"><span class="tag">WebRTC</span><span class="tag">Real-time</span><span class="tag tag-new">NEW</span></div>
+                    </div>
+                    <p>สแกนขยะสดผ่านเว็บแคม วาด Bounding Box บนภาพกล้องแบบ real-time รองรับสแกนอัตโนมัติทุก 3 วินาที และบันทึกผลลงฐานข้อมูลได้</p>
+                </div>
+            </div>
+
+            <div class="feature-item feature-item-new">
+                <div class="feature-icon-wrap">🔮</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>6. พยากรณ์ปริมาณขยะ (Time Series)</span>
+                        <div class="feature-tags"><span class="tag">Linear Regression</span><span class="tag">Moving Average</span><span class="tag tag-new">NEW</span></div>
+                    </div>
+                    <p>ML โมเดลที่ 3 ของระบบ — วิเคราะห์ข้อมูลย้อนหลังและพยากรณ์ปริมาณขยะล่วงหน้า 7–30 วัน แสดงแนวโน้ม (เพิ่ม/ลด/คงที่) พร้อมระดับความมั่นใจ</p>
+                </div>
+            </div>
+
+            <div class="feature-item feature-item-new">
+                <div class="feature-icon-wrap">🏆</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>7. Gamification & Leaderboard</span>
+                        <div class="feature-tags"><span class="tag">User System</span><span class="tag">Badges</span><span class="tag tag-new">NEW</span></div>
+                    </div>
+                    <p>ระบบสมาชิก สะสมคะแนนจากการคัดแยกขยะ รับตราป้าย 5 ระดับ (🌱→♻️→🏆→🛡️→👑) และแข่งขันในตารางอันดับผู้รีไซเคิลของชุมชน</p>
+                </div>
+            </div>
+
+            <div class="feature-item feature-item-new">
+                <div class="feature-icon-wrap">🌍</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>8. Carbon Footprint Calculator</span>
+                        <div class="feature-tags"><span class="tag">CO₂ Savings</span><span class="tag">Environmental Impact</span><span class="tag tag-new">NEW</span></div>
+                    </div>
+                    <p>คำนวณ CO₂ ที่ลดได้จากการรีไซเคิล แยกตามประเภทขยะ เทียบเท่าจำนวนต้นไม้ที่ดูดซับ CO₂ ระยะทางขับรถที่ลดได้ และจำนวนการชาร์จมือถือ</p>
+                </div>
+            </div>
+
+            <div class="feature-item feature-item-new">
+                <div class="feature-icon-wrap">📄</div>
+                <div class="feature-body">
+                    <div class="feature-title">
+                        <span>9. PDF Report Generator</span>
+                        <div class="feature-tags"><span class="tag">reportlab</span><span class="tag">Community Report</span><span class="tag tag-new">NEW</span></div>
+                    </div>
+                    <p>สร้างรายงาน PDF สำหรับโรงเรียน/ชุมชน อัตโนมัติ มีสรุปสถิติ ตารางขยะตามประเภท CO₂ ที่ลดได้ และประวัติการสแกนล่าสุด</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== 3. สถาปัตยกรรม AI ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">3</span>
+            <h2>สถาปัตยกรรม AI</h2>
+        </div>
+        <p>ใช้ Deep Learning 3 โมเดลทำงานร่วมกัน แต่ละโมเดลมีหน้าที่ชัดเจน</p>
+
+        <div class="pipeline-v">
+            <div class="pipeline-v-step">
+                <div class="pv-num">Input</div>
+                <div class="pv-body">
+                    <h4>📤 อัปโหลดภาพ / เฟรมจากกล้อง</h4>
+                    <p>รับภาพจากผู้ใช้ผ่านหน้า Scanner หรือ Live Camera</p>
+                </div>
+            </div>
+            <div class="pipeline-v-arrow">↓</div>
+            <div class="pipeline-v-step pipeline-v-model">
+                <div class="pv-num">M1</div>
+                <div class="pv-body">
+                    <h4>🎯 Model 1: YOLO Object Detection</h4>
+                    <p>ตรวจจับวัตถุในภาพด้วย Bounding Box จำแนกเป็น 6 ประเภทขยะ ส่งออก: ตำแหน่ง, ประเภท, ค่าความมั่นใจ</p>
+                    <p class="pv-note">จากนั้น Crop ภาพวัตถุแต่ละชิ้นเพื่อส่งให้โมเดลถัดไป</p>
+                </div>
+            </div>
+            <div class="pipeline-v-arrow">↓</div>
+            <div class="pipeline-v-step pipeline-v-model">
+                <div class="pv-num">M2</div>
+                <div class="pv-body">
+                    <h4>🔬 Model 2: CNN Quality Classifier</h4>
+                    <p>รับภาพที่ Crop มา จำแนกสภาพเป็น สะอาด / ปนเปื้อน ด้วย Transfer Learning จาก ResNet18</p>
+                    <p class="pv-note">ส่งออก: คุณภาพ (clean/contaminated) + ค่าความมั่นใจ</p>
+                </div>
+            </div>
+            <div class="pipeline-v-arrow">↓</div>
+            <div class="pipeline-v-step">
+                <div class="pv-num">R</div>
+                <div class="pv-body">
+                    <h4>💡 Recommendation Engine</h4>
+                    <p>ใช้ผลจาก M1 + M2 ค้นหาใน Knowledge Base แนะนำถังขยะ วิธีเตรียม และการจัดการที่เหมาะสม</p>
+                </div>
+            </div>
+            <div class="pipeline-v-arrow">↓</div>
+            <div class="pipeline-v-step pipeline-v-model">
+                <div class="pv-num">M3</div>
+                <div class="pv-body">
+                    <h4>🔮 Model 3: Time Series Predictor</h4>
+                    <p>วิเคราะห์ข้อมูลการสแกนสะสม ใช้ Linear Regression + Moving Average พยากรณ์ปริมาณขยะในอนาคต</p>
+                    <p class="pv-note">ส่งออก: จำนวนขยะที่คาดการณ์, แนวโน้ม, ระดับความมั่นใจ</p>
+                </div>
+            </div>
+            <div class="pipeline-v-arrow">↓</div>
+            <div class="pipeline-v-step">
+                <div class="pv-num">Out</div>
+                <div class="pv-body">
+                    <h4>🖥️ Web Application + Dashboard</h4>
+                    <p>แสดงผล บันทึกข้อมูล วิเคราะห์สถิติ คำนวณ CO₂ และสร้างรายงาน</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-note" style="margin-top:16px;">
+            <strong>ข้อดีของการแยกโมเดล:</strong>
+            แต่ละโมเดลทดสอบและวัดประสิทธิภาพได้อิสระ ไม่ใช่เพิ่มความซับซ้อนโดยไม่มีเหตุผล
+        </div>
+    </section>
+
+    <!-- ===== 4. Dataset ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">4</span>
+            <h2>Dataset ที่ใช้</h2>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr><th>Dataset</th><th>ใช้ฝึกโมเดล</th><th>ขนาด</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>TrashNet</strong></td>
+                    <td>จำแนกประเภทขยะ (YOLO baseline)</td>
+                    <td>2,527 ภาพ · 6 ประเภท</td>
+                </tr>
+                <tr>
+                    <td><strong>RealWaste</strong></td>
+                    <td>เพิ่มความหลากหลายจากสภาพแวดล้อมจริง</td>
+                    <td>4,752 ภาพ · 9 ประเภท</td>
+                </tr>
+                <tr>
+                    <td><strong>ภาพสิ่งปนเปื้อน (เก็บเอง)</strong></td>
+                    <td>ฝึก CNN Quality Classifier</td>
+                    <td>เป้าหมาย 300–500 ภาพ/สถานะ</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="about-note" style="margin-top:10px;">
+            TrashNet และ RealWaste ไม่มี Label สิ่งปนเปื้อน จึงต้องรวบรวมและติด Label เพิ่มเติมสำหรับ Model 2 แยกต่างหาก
+        </p>
+    </section>
+
+    <!-- ===== 5. การทดลอง ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">5</span>
+            <h2>แผนการทดลองและตัวชี้วัด</h2>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr><th>#</th><th>การทดลอง</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Exp 1</td><td>Train YOLO สำหรับตรวจจับและจำแนกขยะ 6 ประเภท</td></tr>
+                <tr><td>Exp 2</td><td>Train CNN สำหรับจำแนก สะอาด / ปนเปื้อน</td></tr>
+                <tr><td>Exp 3</td><td>เปรียบเทียบ Optimizer: Adam vs SGD</td></tr>
+                <tr><td>Exp 4</td><td>ทดลอง Learning Rate และ Batch Size</td></tr>
+                <tr><td>Exp 5</td><td>ทดลอง Dropout และ Early Stopping</td></tr>
+                <tr><td>Exp 6</td><td>ประเมินผลโมเดลบน Test Set ที่ไม่เคยเห็น</td></tr>
+            </tbody>
+        </table>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h4>YOLO</h4>
+                <ul class="about-list">
+                    <li>Precision</li><li>Recall</li><li>mAP@50</li><li>mAP@50-95</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <h4>CNN</h4>
+                <ul class="about-list">
+                    <li>Accuracy</li><li>Precision</li><li>Recall</li><li>F1-score</li><li>Confusion Matrix</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <h4>Training</h4>
+                <ul class="about-list">
+                    <li>Training Loss</li><li>Validation Loss</li><li>Convergence curve</li>
+                </ul>
+            </div>
+            <div class="metric-card">
+                <h4>ระบบโดยรวม</h4>
+                <ul class="about-list">
+                    <li>เวลาประมวลผลต่อภาพ</li><li>ความถูกต้องคำแนะนำ</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 6. Stack ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">6</span>
+            <h2>เทคโนโลยีที่ใช้พัฒนา</h2>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-item"><span class="tech-icon">🎯</span><span>YOLOv8</span><span class="tech-desc">Object Detection</span></div>
+            <div class="tech-item"><span class="tech-icon">🧠</span><span>PyTorch / ResNet18</span><span class="tech-desc">Quality Classification</span></div>
+            <div class="tech-item"><span class="tech-icon">📈</span><span>Linear Regression</span><span class="tech-desc">Waste Prediction</span></div>
+            <div class="tech-item"><span class="tech-icon">🖼️</span><span>OpenCV</span><span class="tech-desc">Image Processing</span></div>
+            <div class="tech-item"><span class="tech-icon">🐍</span><span>Flask</span><span class="tech-desc">Backend</span></div>
+            <div class="tech-item"><span class="tech-icon">🌐</span><span>HTML / CSS / JS</span><span class="tech-desc">Frontend</span></div>
+            <div class="tech-item"><span class="tech-icon">💾</span><span>SQLite</span><span class="tech-desc">Database</span></div>
+            <div class="tech-item"><span class="tech-icon">📊</span><span>Chart.js</span><span class="tech-desc">Dashboard Charts</span></div>
+            <div class="tech-item"><span class="tech-icon">📄</span><span>reportlab</span><span class="tech-desc">PDF Reports</span></div>
+            <div class="tech-item"><span class="tech-icon">🎥</span><span>WebRTC</span><span class="tech-desc">Live Camera</span></div>
+        </div>
+    </section>
+
+    <!-- ===== 7. AI Status ===== -->
+    <section class="about-section">
+        <div class="about-section-header">
+            <span class="about-section-num">7</span>
+            <h2>สถานะโมเดล AI ปัจจุบัน</h2>
+        </div>
+        <div class="model-status-grid">
+            <div class="model-status-card">
+                <h4>Model 1: YOLO</h4>
+                <div class="status-row">
+                    <span class="status-label">สถานะ:</span>
+                    <span class="status-badge status-{{ 'ok' if status.detector.ready else 'warn' }}">
+                        {{ 'พร้อมใช้งาน' if status.detector.ready else 'ไม่พร้อม' }}
+                    </span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">โหมด:</span>
+                    <span class="status-value">{{ status.detector.mode }}</span>
+                </div>
+            </div>
+            <div class="model-status-card">
+                <h4>Model 2: CNN</h4>
+                <div class="status-row">
+                    <span class="status-label">สถานะ:</span>
+                    <span class="status-badge status-{{ 'ok' if status.classifier.ready else 'warn' }}">
+                        {{ 'พร้อมใช้งาน' if status.classifier.ready else 'ไม่พร้อม' }}
+                    </span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">โหมด:</span>
+                    <span class="status-value">{{ status.classifier.mode }}</span>
+                </div>
+            </div>
+            <div class="model-status-card">
+                <h4>Model 3: Predictor</h4>
+                <div class="status-row">
+                    <span class="status-label">สถานะ:</span>
+                    <span class="status-badge status-ok">พร้อมใช้งาน</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">โหมด:</span>
+                    <span class="status-value">Linear Regression + MA</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

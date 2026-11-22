@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}โปรไฟล์ - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <span class="profile-badge-icon">{{ current_badge.icon }}</span>
+        </div>
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.email }}</p>
+            <div class="profile-badge-display">
+                <span class="badge-large">{{ current_badge.icon }}</span>
+                <span class="badge-name">{{ current_badge.name }}</span>
+            </div>
+        </div>
+        <div class="profile-points">
+            <span class="points-value">{{ user.points }}</span>
+            <span class="points-label">คะแนนรวม</span>
+        </div>
+    </div>
+
+    <!-- Progress to next badge -->
+    {% if next_badge %}
+    <div class="badge-progress">
+        <div class="badge-progress-header">
+            <span>{{ current_badge.icon }} {{ current_badge.name }}</span>
+            <span>{{ next_badge.icon }} {{ next_badge.name }}</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: {{ progress }}%"></div>
+        </div>
+        <p class="progress-text">ต้องการอีก {{ next_badge.points_required - user.points }} คะแนนเพื่อรับตรา "{{ next_badge.name }}"</p>
+    </div>
+    {% endif %}
+
+    <!-- Stats cards -->
+    <div class="profile-stats-grid">
+        <div class="profile-stat-card">
+            <span class="profile-stat-icon">📸</span>
+            <span class="profile-stat-value">{{ user.total_scans }}</span>
+            <span class="profile-stat-label">ครั้งการสแกน</span>
+        </div>
+        <div class="profile-stat-card">
+            <span class="profile-stat-icon">🗑️</span>
+            <span class="profile-stat-value">{{ user.total_items_sorted }}</span>
+            <span class="profile-stat-label">ชิ้นที่คัดแยก</span>
+        </div>
+        <div class="profile-stat-card">
+            <span class="profile-stat-icon">♻️</span>
+            <span class="profile-stat-value">{{ user.total_recyclable }}</span>
+            <span class="profile-stat-label">ชิ้นรีไซเคิลได้</span>
+        </div>
+        <div class="profile-stat-card">
+            <span class="profile-stat-icon">🌍</span>
+            <span class="profile-stat-value">{{ user.co2_saved }}</span>
+            <span class="profile-stat-label">CO₂ ลดได้ (kg)</span>
+        </div>
+    </div>
+
+    <!-- All badges -->
+    <section class="profile-section">
+        <h3>🎖️ ตราป้ายทั้งหมด</h3>
+        <div class="badges-grid">
+            {% for badge in badges %}
+            <div class="badge-card {% if badge.earned %}badge-earned{% else %}badge-locked{% endif %}">
+                <div class="badge-icon {{ 'badge-icon-earned' if badge.earned else '' }}">
+                    {% if badge.earned %}{{ badge.icon }}{% else %}🔒{% endif %}
+                </div>
+                <div class="badge-info">
+                    <h4>{{ badge.name }}</h4>
+                    <p>{{ badge.description }}</p>
+                    <span class="badge-req">ต้องการ {{ badge.points_required }} คะแนน</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Recent scans -->
+    <section class="profile-section">
+        <h3>🗓️ ประวัติการสแกนล่าสุด</h3>
+        {% if recent_scans %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>วันที่</th>
+                        <th>ชิ้น</th>
+                        <th>สะอาด</th>
+                        <th>ปนเปื้อน</th>
+                        <th>CO₂ (kg)</th>
+                        <th>คะแนน</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in recent_scans %}
+                    <tr>
+                        <td>{{ s.id }}</td>
+                        <td>{{ s.created_at.strftime('%d/%m/%Y %H:%M') if s.created_at else '-' }}</td>
+                        <td><strong>{{ s.total_items }}</strong></td>
+                        <td style="color: #27ae60;">{{ s.clean_count }}</td>
+                        <td style="color: #e74c3c;">{{ s.contaminated_count }}</td>
+                        <td>{{ s.co2_saved }}</td>
+                        <td>+{{ s.points_earned }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-text">ยังไม่มีประวัติการสแกน</p>
+        {% endif %}
+    </section>
+
+    <!-- Logout -->
+    <div class="profile-actions">
+        <button onclick="fetch('/api/logout', {method:'POST'}).then(()=>window.location.href='/')"
+                class="btn btn-secondary">
+            ออกจากระบบ
+        </button>
+    </div>
+</div>
+{% endblock %}

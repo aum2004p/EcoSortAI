@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Live Camera Scan - EcoSort AI{% endblock %}
+
+{% block content %}
+<div class="live-scan-page">
+    <div class="page-header">
+        <h1>🎥 Real-time Camera Scanner</h1>
+        <p>สแกนขยะสดผ่านกล้องเว็บแคม ตรวจจับและจำแนกขยะแบบเรียลไทม์</p>
+    </div>
+
+    <div class="live-scan-layout">
+        <!-- Camera section -->
+        <div class="camera-section">
+            <div class="camera-container">
+                <video id="cameraVideo" autoplay playsinline></video>
+                <canvas id="cameraCanvas"></canvas>
+                <div id="cameraPlaceholder" class="camera-placeholder">
+                    <div class="placeholder-icon">📷</div>
+                    <p>กดปุ่ม "เปิดกล้อง" เพื่อเริ่มสแกน</p>
+                </div>
+                <div id="liveScanStatus" class="live-scan-status hidden">
+                    <div class="scan-indicator"></div>
+                    <span>กำลังสแกน...</span>
+                </div>
+            </div>
+            <div class="camera-controls">
+                <button id="startCameraBtn" class="btn btn-primary">
+                    📷 เปิดกล้อง
+                </button>
+                <button id="stopCameraBtn" class="btn btn-secondary hidden">
+                    ⏹️ หยุดกล้อง
+                </button>
+                <button id="scanNowBtn" class="btn btn-primary hidden">
+                    🔍 สแกนตอนนี้
+                </button>
+                <label class="auto-scan-toggle">
+                    <input type="checkbox" id="autoScanToggle">
+                    <span>สแกนอัตโนมัติทุก 3 วินาที</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Results section -->
+        <div class="live-results-section">
+            <div id="liveSummary" class="live-summary hidden">
+                <h3>📋 ผลการสแกนล่าสุด</h3>
+                <div class="live-summary-grid">
+                    <div class="live-stat">
+                        <span class="live-stat-value" id="liveTotal">0</span>
+                        <span class="live-stat-label">ชิ้น</span>
+                    </div>
+                    <div class="live-stat">
+                        <span class="live-stat-value" id="liveClean">0</span>
+                        <span class="live-stat-label">สะอาด</span>
+                    </div>
+                    <div class="live-stat">
+                        <span class="live-stat-value" id="liveContam">0</span>
+                        <span class="live-stat-label">ปนเปื้อน</span>
+                    </div>
+                    <div class="live-stat">
+                        <span class="live-stat-value" id="liveCO2">0</span>
+                        <span class="live-stat-label">CO₂ (kg)</span>
+                    </div>
+                    <div class="live-stat">
+                        <span class="live-stat-value" id="livePoints">0</span>
+                        <span class="live-stat-label">คะแนน</span>
+                    </div>
+                </div>
+                <!-- Save button for latest scan -->
+                <button id="saveLiveScanBtn" class="btn btn-primary btn-block" style="margin-top:10px;" disabled>
+                    💾 บันทึกผลการสแกนนี้
+                </button>
+                <div id="saveLiveStatus" class="save-status hidden"></div>
+            </div>
+            <div id="liveDetections" class="live-detections"></div>
+            <div id="liveEmpty" class="live-empty">
+                <div class="live-empty-icon">♻️</div>
+                <p>เปิดกล้องและสแกนเพื่อดูผล</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session stats -->
+    <div id="sessionStats" class="session-stats hidden">
+        <h3>📊 สถิติเซสชันนี้</h3>
+        <div class="session-stats-grid">
+            <div class="session-stat">
+                <span class="session-stat-value" id="sessionScans">0</span>
+                <span class="session-stat-label">ครั้งที่สแกน</span>
+            </div>
+            <div class="session-stat">
+                <span class="session-stat-value" id="sessionItems">0</span>
+                <span class="session-stat-label">ชิ้นขยะ</span>
+            </div>
+            <div class="session-stat">
+                <span class="session-stat-value" id="sessionCO2">0.0000</span>
+                <span class="session-stat-label">CO₂ ลดได้ (kg)</span>
+            </div>
+            <div class="session-stat">
+                <span class="session-stat-value" id="sessionPoints">0</span>
+                <span class="session-stat-label">คะแนนรวม</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/live_scan.js') }}"></script>
+{% endblock %}
