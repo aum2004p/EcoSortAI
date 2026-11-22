@@ -19,3 +19,6 @@ numpy==1.26.4
 # Utilities
 Werkzeug==3.0.6
 reportlab>=5.0
+
+# Production server
+gunicorn==23.0.0
