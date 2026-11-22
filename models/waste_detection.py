@@ -134,22 +134,9 @@ class WasteDetector:
     # Fallback / Demo
     # ------------------------------------------------------------------
     def _fallback_detect(self, image_path):
-        """When the pre-trained model finds nothing mappable, label the
-        entire image as one 'general waste' detection."""
-        try:
-            from PIL import Image
-            img = Image.open(image_path)
-            w, h = img.size
-        except Exception:
-            w, h = 640, 480
-
-        meta = WASTE_CATEGORIES['trash']
-        return [{
-            'category': 'trash',
-            'category_th': meta['name_th'],
-            'confidence': 0.50,
-            'bbox': (10, 10, w - 10, h - 10),
-        }]
+        """When the pre-trained model finds nothing mappable, return empty
+        list so the API returns 'ไม่พบวัตถุ' instead of a fake full-image bbox."""
+        return []
 
     def _demo_detect(self, image_path):
         """Demo mode: return a single full-image detection so the UI works."""

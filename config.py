@@ -87,26 +87,67 @@ WASTE_CATEGORIES = {
 # Mapping from COCO class names (YOLOv8 pre-trained) to waste categories.
 # Used only when a custom waste-trained YOLO is not available.
 COCO_TO_WASTE = {
+    # Containers / bottles
     'bottle': 'plastic',
     'wine glass': 'glass',
     'cup': 'plastic',
+    'bowl': 'plastic',
+    'vase': 'glass',
+
+    # Utensils / metal
     'fork': 'metal',
     'knife': 'metal',
     'spoon': 'metal',
-    'bowl': 'plastic',
+    'scissors': 'metal',
+    'clock': 'metal',
+
+    # Paper / cardboard
     'book': 'paper',
-    'sports ball': 'plastic',
+    'newspaper': 'paper',
+    'magazine': 'paper',
+    'envelope': 'paper',
+    'backpack': 'trash',
+    'handbag': 'trash',
+    'suitcase': 'trash',
+
+    # Electronics / trash
     'cell phone': 'trash',
     'laptop': 'trash',
     'remote': 'trash',
     'keyboard': 'trash',
     'mouse': 'trash',
-    'clock': 'metal',
-    'vase': 'glass',
-    'scissors': 'metal',
-    'teddy bear': 'trash',
     'hair drier': 'trash',
     'toothbrush': 'plastic',
+    'teddy bear': 'trash',
+    'tv': 'trash',
+    'microwave': 'trash',
+    'oven': 'trash',
+    'toaster': 'trash',
+    'refrigerator': 'trash',
+    'sink': 'trash',
+
+    # Sports / plastic
+    'sports ball': 'plastic',
+    'frisbee': 'plastic',
+    'skis': 'trash',
+    'snowboard': 'trash',
+    'kite': 'plastic',
+
+    # Cans / metal
+    'can': 'metal',
+    'tin': 'metal',
+
+    # Food packaging (commonly plastic/cardboard)
+    'banana': 'trash',
+    'apple': 'trash',
+    'sandwich': 'trash',
+    'orange': 'trash',
+    'carrot': 'trash',
+    'pizza': 'cardboard',
+    'donut': 'trash',
+    'cake': 'trash',
+    'hot dog': 'trash',
+    'broccoli': 'trash',
 }
 
 # ---------------------------------------------------------------------------
